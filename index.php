@@ -1,6 +1,6 @@
 <?php
-// index.php 20150101 - 20200807
-// Copyright (C) 2015-2020 Mark Constable <markc@renta.net> (AGPL-3.0)
+// index.php 20150101 - 20240910
+// Copyright (C) 2015-2024 Mark Constable <markc@renta.net> (AGPL-3.0)
 
 const DS = DIRECTORY_SEPARATOR;
 const INC = __DIR__ . DS . 'lib' . DS . 'php' . DS;
@@ -16,7 +16,8 @@ echo new Init(new class
 {
     public
     $cfg = [
-        'email' => 'markc@renta.net',
+        'email' => '',
+        'admpw' => '',
         'file'  => __DIR__ . DS . 'lib' . DS . '.ht_conf.php', // settings override
         'hash'  => 'SHA512-CRYPT',
         'host'  => '',
