@@ -96,9 +96,9 @@ class Plugins_Records extends Plugin
                 ['dt' => 5,  'db' => 'id', 'formatter' => function(int $d) : string {
                     return '
                     <a class="update" href="" title="Update DNS record ID: ' . $d . '" data-rowid="' . $d . '">
-                      <i class="fas fa-edit fa-fw cursor-pointer"></i></a>
+                      <i class="bi bi-pencil cursor-pointer"></i></a>
                     <a class="delete" href="" title="Delete DNS record ID: ' . $d . '" data-rowid="' . $d . '">
-                      <i class="fas fa-trash fa-fw cursor-pointer text-danger"></i></a>';
+                      <i class="bi bi-trash cursor-pointer text-danger"></i></a>';
                 }],
                 ['dt' => 6,  'db' => 'active'],
                 ['dt' => 7,  'db' => 'did'],

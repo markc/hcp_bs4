@@ -55,8 +55,24 @@ class Plugins_Auth extends Plugin
         $u = (string) $this->in['login'];
         $p = (string) $this->in['webpw'];
 
+        // Auto-login if development credentials are configured
+        if (!empty($this->g->cfg['email']) && !empty($this->g->cfg['admpw'])) {
+            $_SESSION['usr'] = [
+                'id' => 0,
+                'grp' => 0,
+                'acl' => 0,
+                'login' => $this->g->cfg['email'],
+                'fname' => 'Admin',
+                'lname' => 'User'
+            ];
+            $_SESSION['adm'] = 0;
+            util::log($this->g->cfg['email'] . ' auto-logged in', 'success');
+            $_SESSION['m'] = 'list';
+            util::redirect($this->g->cfg['self']);
+        }
+
         if ($u) {
-            if (!empty($this->g->cfg['admpw']) && $u === 'admin@example.com' && $p === 'admin123') {
+            if (!empty($this->g->cfg['admpw']) && $u === $this->g->cfg['email'] && $p === $this->g->cfg['admpw']) {
                 $_SESSION['usr'] = [
                     'id' => 0,
                     'grp' => 0,

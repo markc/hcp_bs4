@@ -176,7 +176,7 @@ class Plugins_Vhosts extends Plugin
                     return util::numfmt(intval($d ?? '0')); 
                 }],
                 ['dt' => 13, 'db' => 'active',      'formatter' => function(?string $d): string {
-                    return '<i class="fas ' . (intval($d ?? '0') ? 'fa-check text-success' : 'fa-times text-danger') . '"></i>';
+                    return '<i class="bi ' . (intval($d ?? '0') ? 'bi-check text-success' : 'bi-x text-danger') . '"></i>';
                 }],
                 ['dt' => 14, 'db' => 'id'],
                 ['dt' => 15, 'db' => 'updated'],

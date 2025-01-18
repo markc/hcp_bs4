@@ -362,8 +362,8 @@ class Plugins_Valias extends Plugin
                     'db' => 'active', 
                     'formatter' => function(int $d): string {
                         return sprintf(
-                            '<i class="fas %s"></i>',
-                            $d ? 'fa-check text-success' : 'fa-times text-danger'
+                            '<i class="bi %s"></i>',
+                            $d ? 'bi-check text-success' : 'bi-x text-danger'
                         );
                     }
                 ],

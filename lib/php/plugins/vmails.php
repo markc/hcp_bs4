@@ -91,7 +91,7 @@ class Plugins_Vmails extends Plugin
                 }],
                 ['dt' => 3, 'db' => null, 'formatter' => function(?string $d, array $row) : string {
                     return '<a href="" title="Remove this Mailbox" data-removeuser="' . htmlspecialchars((string)$row['user']) . '" data-toggle="modal" data-target="#removemodal">
-                    <small><i class="fas fa-trash fa-fw cursor-pointer text-danger"></i></small>
+                    <small><i class="bi bi-trash cursor-pointer text-danger"></i></small>
                   </a>';
                 }],
                 ['dt' => 4, 'db' => 'updated'],

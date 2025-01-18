@@ -4,7 +4,7 @@
 
 const DS = DIRECTORY_SEPARATOR;
 const INC = __DIR__ . DS . 'lib' . DS . 'php' . DS;
-const DBG = false;
+const DBG = true;
 
 spl_autoload_register(function (string $c): void {
     $f = INC . str_replace(['\\', '_'], [DS, DS], strtolower($c)) . '.php';

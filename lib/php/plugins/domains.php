@@ -263,9 +263,9 @@ class Plugins_Domains extends Plugin
                 ['dt' => 4, 'db' => 'id', 'formatter' => function(string $d, array $row): string {
                     return '
                     <a href="" class="shwho" data-toggle="modal" data-target="#shwhomodal" title="Show Domain Info" data-rowid="' . $d . '" data-rowname="' . $row['name'] . '">
-                      <i class="fas fa-info-circle fa-fw cursor-pointer"></i></a>
+                      <i class="bi bi-info-circle cursor-pointer"></i></a>
                     <a href="" class="delete" data-toggle="modal" data-target="#removemodal" title="Remove Domain ID: ' . $d . '" data-rowid="' . $d . '" data-rowname="' . $row['name'] . '">
-                      <i class="fas fa-trash fa-fw cursor-pointer text-danger"></i></a>';
+                      <i class="bi bi-trash cursor-pointer text-danger"></i></a>';
                 }],
                 ['dt' => 5, 'db' => 'updated'],
             ];

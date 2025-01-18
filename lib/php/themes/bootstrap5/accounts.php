@@ -63,7 +63,7 @@ elog(__METHOD__);
           </h1>
         </div>
         <div class="table-responsive">
-          <table id="accounts" class="table table-borderless table-striped w-100">
+          <table id="accounts" class="table table-borderless table-striped datatable">
             <thead>
               <tr>
                 <th>User ID</th>
@@ -74,8 +74,7 @@ elog(__METHOD__);
                 <th>Grp</th>
               </tr>
             </thead>
-            <tbody>
-            </tbody>
+            <tfoot></tfoot>
           </table>
         </div>
         <div class="modal fade" id="createmodal" tabindex="-1" role="dialog" aria-labelledby="createmodal" aria-hidden="true">
@@ -98,8 +97,12 @@ elog(__METHOD__);
             "ajax": "?x=json&o=accounts&m=list",
             "scrollX": true,
             "columnDefs": [
-              {"targets":0, "className":"text-truncate"},
-              {"targets":3, "className":"text-truncate"},
+              {"targets": 0, "className": "text-truncate", "width": "25%"},
+              {"targets": 1, "className": "text-truncate", "width": "15%"},
+              {"targets": 2, "className": "text-truncate", "width": "15%"},
+              {"targets": 3, "className": "text-truncate", "width": "25%"},
+              {"targets": 4, "className": "text-center", "width": "10%"},
+              {"targets": 5, "className": "text-center", "width": "10%"}
             ]
           });
 

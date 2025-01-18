@@ -124,9 +124,9 @@ elog(__METHOD__);
         return <<<HTML
         <div class="row">
             <h1>
-                <a href="?o=vhosts&m=list"><i class="fas fa-angle-double-left fa-fw"></i></a> Vhosts
+                <a href="?o=vhosts&m=list"><i class="bi bi-chevron-double-left"></i></a> Vhosts
                 <a href="" title="Remove this VHOST" data-bs-toggle="modal" data-bs-target="#removemodal">
-                    <small><i class="fas fa-trash fa-fw cursor-pointer text-danger"></i></small>
+                    <small><i class="bi bi-trash cursor-pointer text-danger"></i></small>
                 </a>
             </h1>
         </div>
@@ -183,7 +183,8 @@ elog(__METHOD__);
     private function generateListHTML(): string
     {
 elog(__METHOD__);
-
+        $m = $this->g->in['m'] ?? '';
+        
         return <<<HTML
         <div class="row">
             <h1>

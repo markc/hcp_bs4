@@ -1,9 +1,6 @@
-<?php
-
-declare(strict_types=1);
-
-// lib/php/themes/bootstrap5/home.php 20150101 - 20240906
-// Copyright (C) 2015-2024 Mark Constable <markc@renta.net> (AGPL-3.0)
+<?php declare(strict_types=1);
+// lib/php/themes/bootstrap5/home.php 20150101 - 20250118
+// Copyright (C) 2015-2025 Mark Constable <markc@renta.net> (AGPL-3.0)
 
 class Themes_Bootstrap5_Home extends Themes_Bootstrap5_Theme
 {
@@ -12,7 +9,7 @@ class Themes_Bootstrap5_Home extends Themes_Bootstrap5_Theme
 elog(__METHOD__);
 
         return <<<HTML
-        <div class="p-md-5 p-2 mb-4 bg-body-tertiary rounded-3 text-center">
+        <div class="p-md-5 p-2 mb-4 rounded-3 text-center border">
             <h1 class="display-5 fw-bold mt-3"><i class="bi bi-boxes"></i> NetServa HCP</h1>
             <p class="col col-md-8 fs-5 ms-auto me-auto py-md-3">
                 This is a lightweight Web, Mail and DNS server with a PHP based

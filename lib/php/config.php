@@ -13,7 +13,7 @@ class Config {
         'hash'  => 'SHA512-CRYPT',
         'host'  => 'localhost',
         'perp'  => 25,
-        'self'  => '/hcp/',
+        'self'  => '/',
     ];
 
     public array $in = [
@@ -55,33 +55,33 @@ class Config {
 
     public array $nav1 = [
         'non' => [
-            ['Webmail',     '../',              'fas fa-envelope fa-fw'],
-            ['Phpmyadmin',  'phpmyadmin/',      'fas fa-globe fa-fw'],
+            ['Webmail',     '../',              'bi bi-envelope'],
+            ['Phpmyadmin',  'phpmyadmin/',      'bi bi-globe'],
         ],
         'usr' => [
-            ['Webmail',     '../',              'fas fa-envelope fa-fw'],
-            ['Phpmyadmin',  'phpmyadmin/',      'fas fa-globe fa-fw'],
+            ['Webmail',     '../',              'bi bi-envelope'],
+            ['Phpmyadmin',  'phpmyadmin/',      'bi bi-globe'],
         ],
         'adm' => [
             ['Menu',        [
-                ['Webmail',     '../',          'fas fa-envelope fa-fw'],
-                ['Phpmyadmin',  'phpmyadmin/',  'fas fa-globe fa-fw'],
-            ], 'fas fa-bars fa-fw'],
+                ['Webmail',     '../',          'bi bi-envelope'],
+                ['Phpmyadmin',  'phpmyadmin/',  'bi bi-globe'],
+            ], 'bi bi-list'],
             ['Admin',       [
-                ['Accounts',    '?o=accounts',  'fas fa-users fa-fw'],
-                ['Vhosts',      '?o=vhosts',    'fas fa-globe fa-fw'],
-                ['SSH Manager', '?o=sshm',      'fas fa-globe fa-key'],
-                ['Mailboxes',   '?o=vmails',    'fas fa-envelope fa-fw'],
-                ['Aliases',     '?o=valias',    'fas fa-envelope-square fa-fw'],
-                ['DKIM',        '?o=dkim',      'fas fa-address-card fa-fw'],
-                ['Domains',     '?o=domains',   'fas fa-server fa-fw'],
-            ], 'fas fa-user-cog fa-fw'],
+                ['Accounts',    '?o=accounts',  'bi bi-people'],
+                ['Vhosts',      '?o=vhosts',    'bi bi-globe'],
+                ['SSH Manager', '?o=sshm',      'bi bi-key'],
+                ['Mailboxes',   '?o=vmails',    'bi bi-envelope'],
+                ['Aliases',     '?o=valias',    'bi bi-envelope-at'],
+                ['DKIM',        '?o=dkim',      'bi bi-person-vcard'],
+                ['Domains',     '?o=domains',   'bi bi-server'],
+            ], 'bi bi-gear'],
             ['Stats',       [
-                ['Sys Info',    '?o=infosys',   'fas fa-tachometer-alt fa-fw'],
-                ['Processes',   '?o=processes', 'fas fa-code-branch fa-fw'],
-                ['Mail Info',   '?o=infomail',  'fas fa-envelope-square fa-fw'],
-                ['Mail Graph',  '?o=mailgraph', 'fas fa-envelope fa-fw'],
-            ], 'fas fa-chart-line fa-fw'],
+                ['Sys Info',    '?o=infosys',   'bi bi-speedometer'],
+                ['Processes',   '?o=processes', 'bi bi-diagram-2'],
+                ['Mail Info',   '?o=infomail',  'bi bi-envelope-at'],
+                ['Mail Graph',  '?o=mailgraph', 'bi bi-envelope'],
+            ], 'bi bi-graph-up'],
         ],
     ];
 
