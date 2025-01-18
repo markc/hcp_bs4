@@ -1,0 +1,123 @@
+:root {
+  /* Override Bootstrap variables for dark theme */
+  --bs-body-bg: #2A2A2A;
+  --bs-body-color: #fff;
+  --bs-dark: #333333;
+  --bs-primary: #00E6E6;
+  --bs-link-color: #00E6E6;
+  --bs-link-hover-color: #00CCCC;
+  
+  /* Card styles */
+  --bs-card-bg: #333333;
+  --bs-card-color: #fff;
+  --bs-card-border-color: rgba(255, 255, 255, 0.125);
+  --bs-card-cap-bg: #333333;
+  --bs-card-cap-color: #fff;
+  
+  /* Input styles */
+  --bs-input-bg: #404040;
+  --bs-input-color: #fff;
+  --bs-input-border-color: #4d4d4d;
+  
+  /* Table styles */
+  --bs-table-bg: #333333;
+  --bs-table-color: #fff;
+  --bs-table-border-color: #404040;
+  --bs-table-striped-bg: #383838;
+  --bs-table-hover-bg: #404040;
+  
+  /* Navbar styles */
+  --bs-navbar-dark-color: #fff;
+  --bs-navbar-dark-hover-color: #00E6E6;
+  
+  /* Dropdown styles */
+  --bs-dropdown-bg: #333333;
+  --bs-dropdown-color: #fff;
+  --bs-dropdown-link-color: #fff;
+  --bs-dropdown-link-hover-bg: #404040;
+  --bs-dropdown-link-hover-color: #00E6E6;
+}
+
+/* Additional dark theme overrides */
+.bg-light {
+  background-color: #333333 !important;
+  color: #fff !important;
+}
+
+.text-dark {
+  color: #fff !important;
+}
+
+.border {
+  border-color: #404040 !important;
+}
+
+/* Form controls */
+.form-control {
+  background-color: var(--bs-input-bg);
+  color: var(--bs-input-color);
+  border-color: var(--bs-input-border-color);
+}
+
+.form-control:focus {
+  background-color: var(--bs-input-bg);
+  color: var(--bs-input-color);
+  border-color: var(--bs-primary);
+}
+
+/* Tables */
+.table {
+  color: var(--bs-table-color);
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: var(--bs-table-striped-bg);
+  color: var(--bs-table-color);
+}
+
+.table-hover > tbody > tr:hover {
+  background-color: var(--bs-table-hover-bg);
+  color: var(--bs-table-color);
+}
+
+/* Cards */
+.card {
+  background-color: var(--bs-card-bg);
+  border-color: var(--bs-card-border-color);
+}
+
+.card-header {
+  background-color: var(--bs-card-cap-bg);
+  border-bottom-color: var(--bs-card-border-color);
+}
+
+/* Progress bars */
+.progress {
+  background-color: #404040;
+}
+
+/* Charts and graphs */
+.chart-wrapper {
+  background-color: var(--bs-card-bg);
+}
+
+/* Sidebar */
+.sidebar-wrapper {
+  background-color: var(--bs-dark);
+}
+
+.sidebar-wrapper .menu .sidebar-link {
+  color: #fff;
+}
+
+.sidebar-wrapper .menu .sidebar-link:hover {
+  background-color: #404040;
+}
+
+/* Custom styles for the circular progress in the image */
+.progress-circle {
+  background: conic-gradient(
+    #00E6E6 var(--progress),
+    #404040 var(--progress)
+  );
+}

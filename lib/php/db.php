@@ -1,15 +1,15 @@
-<?php
-// lib/php/db.php 20150225 - 20180512
-// Copyright (C) 2015-2018 Mark Constable <markc@renta.net> (AGPL-3.0)
+<?php declare(strict_types=1);
+// lib/php/db.php 20150225 - 20250117
+// Copyright (C) 2015-2025 Mark Constable <markc@renta.net> (AGPL-3.0)
 
 class Db extends \PDO
 {
-    public static $dbh = null;
-    public static $tbl = null;
+    public static ?\PDO $dbh = null;
+    public static ?string $tbl = null;
 
     public function __construct(array $dbcfg)
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         if (is_null(self::$dbh)) {
             extract($dbcfg);
@@ -30,9 +30,9 @@ elog(__METHOD__);
         }
     }
 
-    public static function create(array $ary)
+    public static function create(array $ary): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         $fields = $values = '';
         foreach($ary as $k =>$v) {
@@ -48,7 +48,7 @@ elog(__METHOD__);
  INSERT INTO `" . self::$tbl . "` ($fields)
  VALUES ($values)";
 
-elog("sql=$sql");
+        elog("sql=$sql");
 
         try {
             $stm = self::$dbh->prepare($sql);
@@ -65,9 +65,10 @@ elog("sql=$sql");
         string $where = '',
         string $wval  = '',
         string $extra = '',
-        string $type  = 'all')
+        string $type  = 'all'
+    ): mixed
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         $w = $where ? "
     WHERE $where = :wval" : '';
@@ -78,14 +79,14 @@ elog(__METHOD__);
  SELECT $field
    FROM `" . self::$tbl . "`$w $extra";
 
-elog("sql=$sql");
+        elog("sql=$sql");
 
         return self::qry($sql, $a, $type);
     }
 
-    public static function update(array $set, array $where)
+    public static function update(array $set, array $where): bool
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         $set_str = '';
         foreach($set as $k =>$v) $set_str .= "
@@ -104,7 +105,7 @@ elog(__METHOD__);
  UPDATE `" . self::$tbl . "` SET$set_str
   WHERE$where_str";
 
-elog("sql=$sql");
+        elog("sql=$sql");
 
         try {
             $stm = self::$dbh->prepare($sql);
@@ -115,9 +116,9 @@ elog("sql=$sql");
         }
     }
 
-    public static function delete(array $where)
+    public static function delete(array $where): bool
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         $where_str = '';
         $where_ary = [];
@@ -130,7 +131,7 @@ elog(__METHOD__);
  DELETE FROM `" . self::$tbl . "`
   WHERE $where_str";
 
-elog("sql=$sql");
+        elog("sql=$sql");
 
         try {
             $stm = self::$dbh->prepare($sql);
@@ -141,9 +142,9 @@ elog("sql=$sql");
         }
     }
 
-    public static function qry(string $sql, array $ary = [], string $type = 'all')
+    public static function qry(string $sql, array $ary = [], string $type = 'all'): mixed
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         try {
             if ($type !==  'all') $sql .= ' LIMIT 1';
@@ -163,9 +164,9 @@ elog(__METHOD__);
     }
 
     // bind value statement
-    public static function bvs($stm, array $ary)
+    public static function bvs(\PDOStatement $stm, array $ary): void
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         if (is_object($stm) && ($stm instanceof \PDOStatement)) {
             foreach($ary as $k => $v) {
@@ -185,9 +186,9 @@ elog(__METHOD__);
 
     // See http://datatables.net/usage/server-side
 
-    public static function simple($request, $table, $primaryKey, $columns, $extra='')
+    public static function simple(array $request, string $table, string $primaryKey, array $columns, string $extra=''): array
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         $db     = self::$dbh;
         $cols   = '`' . implode("`, `", self::pluck($columns, 'db')) . '`';
@@ -199,7 +200,7 @@ elog(__METHOD__);
 
         if ($extra) $where .= $where ? " AND ($extra)" : " WHERE $extra";
 
-elog("where=$where");
+        elog("where=$where");
 
         $query  = "
  SELECT $cols
@@ -223,9 +224,9 @@ elog("where=$where");
         ];
     }
 
-    public static function data_output($columns, $data)
+    public static function data_output(array $columns, array $data): array
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         $out = array();
 
@@ -249,9 +250,9 @@ elog(__METHOD__);
         return $out;
     }
 
-    public static function limit($request, $columns)
+    public static function limit(array $request, array $columns): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         $limit = '';
 
@@ -262,9 +263,9 @@ elog(__METHOD__);
         return $limit;
     }
 
-    public static function order($request, $columns)
+    public static function order(array $request, array $columns): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         $order = '';
 
@@ -290,9 +291,9 @@ elog(__METHOD__);
         return $order;
     }
 
-    public static function filter($request, $columns, &$bindings)
+    public static function filter(array $request, array $columns, array &$bindings): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         $globalSearch = $columnSearch = [];
         $dtColumns = self::pluck($columns, 'dt');
@@ -348,11 +349,11 @@ elog(__METHOD__);
     }
 
 
-    public static function sql_exec($db, $bindings, $sql = null, string $type = 'all')
+    public static function sql_exec(\PDO $db, array|string $bindings, ?string $sql = null, string $type = 'all'): mixed
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
-elog("sql=$sql");
+        elog("sql=$sql");
 
         // Argument shifting
         if ($sql === null) {
@@ -382,26 +383,26 @@ elog("sql=$sql");
         elseif ($type === 'col')  return $stmt->fetchColumn();
     }
 
-    private static function fatal($msg)
+    private static function fatal(string $msg): never
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         echo json_encode(["error" => $msg]);
         exit(0);
     }
 
-    private static function bind(&$a, $val, $type)
+    private static function bind(array &$a, mixed $val, int $type): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         $key = ':binding_' . count($a);
         $a[] = ['key' => $key, 'val' => $val, 'type' => $type];
         return $key;
     }
 
-    private static function pluck($a, $prop)
+    private static function pluck(array $a, string $prop): array
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         $out = [];
         for($i = 0, $len = count($a) ; $i < $len ; $i++) {
@@ -410,9 +411,9 @@ elog(__METHOD__);
         return $out;
     }
 
-    private static function _flatten($a, $join = ' AND ')
+    private static function _flatten(array|string|null $a, string $join = ' AND '): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         if (! $a) {
             return '';

@@ -1,49 +1,53 @@
-<?php
-// lib/php/plugins/records.php 20150101 - 20190605
-// Copyright (C) 2015-2019 Mark Constable <markc@renta.net> (AGPL-3.0)
+<?php declare(strict_types=1);
+// lib/php/plugins/records.php 20150101 - 20250117
+// Copyright (C) 2015-2025 Mark Constable <markc@renta.net> (AGPL-3.0)
 
 class Plugins_Records extends Plugin
 {
-    protected
-    $tbl = 'records',
-    $in = [
+    protected string $tbl = 'records';
+    
+    protected array $in = [
         'content'     => '',
         'name'        => '',
         'prio'        => 0,
         'ttl'         => 300,
         'type'        => '',
+        'domain_id'   => 0,
+        'updated'     => '',
+        'created'     => ''
     ];
 
     public function __construct(Theme $t)
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
-        if ($t->g->dns['db']['type'])
+        if ($t->g->dns['db']['type']) {
             $this->dbh = new db($t->g->dns['db']);
+        }
         parent::__construct($t);
     }
 
     protected function create() : string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         if (util::is_post()) {
             $in = $this->validate($this->in);
             if (!empty($in)) {
                 $in['created'] = $in['updated'];
                 $lid = db::create($in);
-                $this->update_domains($in['domain_id'], $in['updated'] );
+                $this->update_domains($in['domain_id'], $in['updated']);
                 util::log('Created DNS record ID: ' . $lid . ' for ' . $in['name'], 'success');
             }
             $i = intval(util::enc($_POST['did']));
-            util::redirect( $this->g->cfg['self'] . '?o=' . $this->g->in['o'] . '&m=list&i=' . $i);
+            util::redirect($this->g->cfg['self'] . '?o=' . $this->g->in['o'] . '&m=list&i=' . $i);
         }
         return 'Error creating DNS record';
     }
 
     protected function update() : string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         if (util::is_post()) {
             $in = $this->validate($this->in);
@@ -51,18 +55,18 @@ elog(__METHOD__);
                 $dom = util::enc($_POST['domain']);
                 $in['created'] = $in['updated'];
                 db::update($in, [['id', '=', $this->g->in['i']]]);
-                $this->update_domains($in['domain_id'], $in['updated'] );
+                $this->update_domains($in['domain_id'], $in['updated']);
                 util::log('Updated DNS record ID: ' . $this->g->in['i'] . ' for ' . $dom, 'success');
             }
             $i = intval(util::enc($_POST['did']));
-            util::redirect( $this->g->cfg['self'] . '?o=' . $this->g->in['o'] . '&m=list&i=' . $i);
+            util::redirect($this->g->cfg['self'] . '?o=' . $this->g->in['o'] . '&m=list&i=' . $i);
         }
         return 'Error updating DNS record';
     }
 
     protected function delete() : string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         if (util::is_post()) {
             $dom = util::enc($_POST['domain']);
@@ -73,14 +77,14 @@ elog(__METHOD__);
             $this->update_domains($did, $now);
             util::log('Deleted DNS record ID: ' . $this->g->in['i'] . ' from ' . $dom, 'success');
             $i = $did;
-            util::redirect( $this->cfg['self'] . '?o=' . $this->g->in['o'] . '&m=list&i=' . $i);
+            util::redirect($this->cfg['self'] . '?o=' . $this->g->in['o'] . '&m=list&i=' . $i);
         }
         return 'Error deleting DNS record';
     }
 
     protected function list() : string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         if ($this->g->in['x'] === 'json') {
             $columns = [
@@ -89,7 +93,7 @@ elog(__METHOD__);
                 ['dt' => 2,  'db' => 'type'],
                 ['dt' => 3,  'db' => 'prio'],
                 ['dt' => 4,  'db' => 'ttl'],
-                ['dt' => 5,  'db' => 'id', 'formatter' => function($d) {
+                ['dt' => 5,  'db' => 'id', 'formatter' => function(int $d) : string {
                     return '
                     <a class="update" href="" title="Update DNS record ID: ' . $d . '" data-rowid="' . $d . '">
                       <i class="fas fa-edit fa-fw cursor-pointer"></i></a>
@@ -113,7 +117,7 @@ elog(__METHOD__);
 
     private function update_domains(int $did, string $now) : bool
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         if ($did && $now) {
             $sql = "
@@ -138,7 +142,7 @@ elog(__METHOD__);
 
     private function validate(array $in) : array
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         if (empty($in['content'])) {
             util::log('Content must not be empty');
@@ -154,11 +158,13 @@ elog(__METHOD__);
             return [];
         }
 
-        if ($in['type'] === 'TXT')
+        if ($in['type'] === 'TXT') {
             $in['content'] = '"' . trim(htmlspecialchars_decode($in['content'], ENT_COMPAT), '"') . '"';
+        }
 
-        if ($in['type'] === 'CAA')
+        if ($in['type'] === 'CAA') {
             $in['content'] = htmlspecialchars_decode($in['content'], ENT_COMPAT);
+        }
 
         $domain = strtolower(util::enc($_POST['domain']));
         $in['name'] = strtolower(rtrim(str_replace($domain, '', $in['name']), '.'));

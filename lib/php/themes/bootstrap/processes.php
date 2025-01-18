@@ -24,7 +24,7 @@ elog(__METHOD__);
         </div><!-- END UPPER ROW -->
         <div class="row">
           <div class="col-12">
-            <h5>Process List <small>(' . (count(explode("\n", $in['procs'])) - 1) . ')</small></h5>
+            <h5>Process List <small>(' . ($in['procs'] === null ? 0 : count(explode("\n", $in['procs'])) - 1) . ')</small></h5>
             <pre><code>' . $in['procs'] . '
             </code></pre>
           </div>

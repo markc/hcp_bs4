@@ -1,22 +1,20 @@
-<?php
-// lib/php/init.php 20150101 - 20200414
-// Copyright (C) 2015-2020 Mark Constable <markc@renta.net> (AGPL-3.0)
+<?php declare(strict_types=1);
+// lib/php/init.php 20150101 - 20250116
+// Copyright (C) 2015-2025 Mark Constable <markc@renta.net> (AGPL-3.0)
 
 class Init
 {
-    private $t = null;
+    private ?Theme $t = null;
 
-    public function __construct(object $g)
+    public function __construct(Config $g)
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         session_start();
 
-elog('GET=' . var_export($_GET, true));
-elog('POST=' . var_export($_POST, true));
-elog('SESSION=' . var_export($_SESSION, true));
-
-        //$_SESSION = []; // to reset session for testing
+        elog('GET=' . var_export($_GET, true));
+        elog('POST=' . var_export($_POST, true));
+        elog('SESSION=' . var_export($_SESSION, true));
 
         $g->cfg['host'] = $g->cfg['host'] ?? getenv('HOSTNAME');
 
@@ -25,13 +23,15 @@ elog('SESSION=' . var_export($_SESSION, true));
         $g->cfg['self'] = str_replace('index.php', '', $_SERVER['PHP_SELF']);
 
         if (!isset($_SESSION['c'])) $_SESSION['c'] = Util::random_token(32);
-        util::ses('o'); util::ses('m'); util::ses('l');
+        $o = util::ses('o'); 
+        $m = util::ses('m'); 
+        $l = util::ses('l');
         $t = util::ses('t', '', $g->in['t']);
 
         $t1 = 'themes_' . $t . '_' . $g->in['o'];
         $t2 = 'themes_' . $t . '_theme';
 
-        $this->t = $thm = class_exists($t1) ? new $t1($g)
+        $this->t = $g->t = $thm = class_exists($t1) ? new $t1($g)
             : (class_exists($t2) ? new $t2($g) : new Theme($g));
 
         $p  = 'plugins_' . $g->in['o'];
@@ -45,9 +45,9 @@ elog('SESSION=' . var_export($_SESSION, true));
                 $g->out[$k] = method_exists($thm, $k) ? $thm->$k() : $v;
     }
 
-    public function __toString() : string
+    public function __toString(): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         $g = $this->t->g;
         $x = $g->in['x'];
@@ -68,12 +68,11 @@ elog(__METHOD__);
 
     public function __destruct()
     {
-//error_log('SESSION=' . var_export($_SESSION, true));
         elog(__FILE__.' '.$_SERVER['REMOTE_ADDR'].' '.round((microtime(true)-$_SERVER['REQUEST_TIME_FLOAT']), 4)."\n");
     }
 }
 
-function dbg($var = null)
+function dbg(mixed $var = null): void
 {
     if (is_object($var))
         error_log(ReflectionObject::export($var, true));
@@ -84,7 +83,7 @@ function dbg($var = null)
     error_log($ob);
 }
 
-function elog(string $content) {
+function elog(string $content): void {
     if (DBG) error_log($content);
 }
 

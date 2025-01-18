@@ -4,6 +4,11 @@
 
 class Themes_Bootstrap_Theme extends Theme
 {
+    public function __construct(Config $g)
+    {
+        parent::__construct($g);
+    }
+
     public function css() : string
     {
 elog(__METHOD__);

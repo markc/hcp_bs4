@@ -1,17 +1,18 @@
-<?php
-// lib/php/plugins/mail/infomail.php 20170225 - 20170514
-// Copyright (C) 2015-2017 Mark Constable <markc@renta.net> (AGPL-3.0)
+<?php declare(strict_types=1);
+// lib/php/plugins/mail/infomail.php 20170225 - 20250117
+// Copyright (C) 2015-2025 Mark Constable <markc@renta.net> (AGPL-3.0)
 
 class Plugins_InfoMail extends Plugin
 {
-    protected $pflog = '/tmp/pflogsumm.log';
+    protected string $pflog = '/tmp/pflogsumm.log';
+    protected string $pflogs = '';
 
-    public function list() : string
+    public function list(): string
     {
 elog(__METHOD__);
 
         return $this->t->list([
-            'mailq' => shell_exec('mailq'),
+            'mailq' => shell_exec('mailq') ?? '',
             'pflogs' => is_readable($this->pflog)
                 ? file_get_contents($this->pflog)
                 : 'none',
@@ -21,11 +22,11 @@ elog(__METHOD__);
         ]);
     }
 
-    public function pflog_renew()
+    public function pflog_renew(): string
     {
 elog(__METHOD__);
 
-        $this->pflogs = shell_exec('sudo pflogs');
+        $this->pflogs = shell_exec('sudo pflogs') ?? '';
         return $this->list();
     }
 }

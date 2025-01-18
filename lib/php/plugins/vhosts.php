@@ -1,12 +1,13 @@
-<?php
-// lib/php/plugins/vhosts.php 20200414
-// Copyright (C) 2015-2020 Mark Constable <markc@renta.net> (AGPL-3.0)
+<?php declare(strict_types=1);
+// lib/php/plugins/vhosts.php 20250117
+// Copyright (C) 2015-2025 Mark Constable <markc@renta.net> (AGPL-3.0)
 
 class Plugins_Vhosts extends Plugin
 {
-    protected
-    $tbl = 'vhosts',
-    $in = [
+    protected string $tbl = 'vhosts';
+
+    /** @var array<string, int|string> */
+    protected array $in = [
         'active'    => 0,
         'aid'       => 0,
         'aliases'   => 10,
@@ -25,39 +26,37 @@ class Plugins_Vhosts extends Plugin
 
     protected function create() : string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         if (util::is_post()) {
-            extract($this->in);
-//            $active = $active ? 1 : 0;
-
-//            if(!util::is_valid_plan($plan)){
-//                util::log('Invalid plan ' . $plan);
-//                util::redirect($this->g->cfg['self'] . '?o=vhosts');
-//            }
+            $domain = (string)($this->in['domain'] ?? '');
+            $cms = (string)($this->in['cms'] ?? '');
+            $ssl = (string)($this->in['ssl'] ?? '');
+            $ip = (string)($this->in['ip'] ?? '');
+            $uuser = (string)($this->in['uuser'] ?? '');
 
             if (file_exists('/home/u/' . $domain)) {
                 util::log('/home/u/' . $domain . ' already exists', 'warning');
-                $_POST = []; return $this->t->create($this->in);
+                $_POST = [];
+                return $this->t->create($this->in);
             }
 
-//            if ($mailquota > $diskquota) {
-//                util::log('Mailbox quota exceeds domain disk quota');
-//                $_POST = []; return $this->t->create($this->in);
-//            }
+            $num_results = (int)db::read('COUNT(id)', 'domain', $domain, '', 'col');
 
-            $num_results = db::read('COUNT(id)', 'domain', $domain, '', 'col');
-
-            if ($num_results != 0) {
+            if ($num_results !== 0) {
                 util::log('Domain already exists');
-                $_POST = []; return $this->t->create($this->in);
+                $_POST = [];
+                return $this->t->create($this->in);
             }
 
             $cms = ($cms === 'on') ? 'wp' : 'none';
             $ssl = ($ssl === 'on') ? 'self' : 'le';
             $vhost = $uuser ? $uuser . '@' . $domain : $domain;
 
-            shell_exec("nohup sh -c 'sudo addvhost $vhost $cms $ssl $ip' > /tmp/addvhost.log 2>&1 &");
+            shell_exec("nohup sh -c 'sudo addvhost " . escapeshellarg($vhost) . " " . 
+                      escapeshellarg($cms) . " " . escapeshellarg($ssl) . " " . 
+                      escapeshellarg($ip) . "' > /tmp/addvhost.log 2>&1 &");
+            
             util::log('Added ' . $domain . ', please wait another few minutes for the setup to complete', 'success');
             util::redirect($this->g->cfg['self'] . '?o=vhosts');
         }
@@ -66,26 +65,29 @@ elog(__METHOD__);
 
     protected function read() : string
     {
-elog(__METHOD__);
-
-        return $this->t->update(db::read('*', 'id', $this->g->in['i'], '', 'one'));
+        elog(__METHOD__);
+        $id = (int)($this->g->in['i'] ?? 0);
+        return $this->t->update(db::read('*', 'id', $id, '', 'one'));
     }
 
     protected function update() : string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         if (util::is_post()) {
-            extract($this->in);
-            $diskquota *= 1000000;
-            $mailquota *= 1000000;
-            $active = $active ? 1 : 0;
+            $id = (int)($this->g->in['i'] ?? 0);
+            $active = (int)($this->in['active'] ?? 0);
+            $aliases = (int)($this->in['aliases'] ?? 0);
+            $diskquota = (int)($this->in['diskquota'] ?? 0) * 1000000;
+            $mailboxes = (int)($this->in['mailboxes'] ?? 0);
+            $mailquota = (int)($this->in['mailquota'] ?? 0) * 1000000;
 
-            $domain = db::read('domain', 'id', $this->g->in['i'], '', 'col');
+            $domain = (string)db::read('domain', 'id', $id, '', 'col');
 
             if ($mailquota > $diskquota) {
                 util::log('Mailbox quota exceeds disk quota');
-                $_POST = []; return $this->read();
+                $_POST = [];
+                return $this->read();
             }
 
             $sql = "
@@ -99,8 +101,9 @@ elog(__METHOD__);
         `updated`   = :updated
   WHERE `id` = :id";
 
-            $res = db::qry($sql, [
-                'id'        => $this->g->in['i'],
+            /** @var array<string, int|string> */
+            $params = [
+                'id'        => $id,
                 'active'    => $active,
                 'aliases'   => $aliases,
                 'diskquota' => $diskquota,
@@ -108,55 +111,72 @@ elog(__METHOD__);
                 'mailboxes' => $mailboxes,
                 'mailquota' => $mailquota,
                 'updated'   => date('Y-m-d H:i:s'),
-            ]);
+            ];
 
-            util::log('Vhost ID ' . $this->g->in['i'] . ' updated', 'success');
-            util::redirect( $this->cfg['self'] . '?o=' . $this->g->in['o'] . '&m=list');
+            db::qry($sql, $params);
+
+            util::log('Vhost ID ' . $id . ' updated', 'success');
+            util::redirect($this->cfg['self'] . '?o=' . $this->g->in['o'] . '&m=list');
         } elseif ($this->g->in['i']) {
             return $this->read();
-        } else return 'Error updating item';
+        }
+        return 'Error updating item';
     }
 
     protected function delete() : string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
-        if (util::is_post() && $this->g->in['i']) {
-            $domain = db::read('domain', 'id', $this->g->in['i'], '', 'col');
+        if (util::is_post() && isset($this->g->in['i'])) {
+            $id = (int)$this->g->in['i'];
+            $domain = (string)db::read('domain', 'id', $id, '', 'col');
+            
             if ($domain) {
-                shell_exec("nohup sh -c 'sudo delvhost $domain' > /tmp/delvhost.log 2>&1 &");
+                shell_exec("nohup sh -c 'sudo delvhost " . escapeshellarg($domain) . 
+                          "' > /tmp/delvhost.log 2>&1 &");
                 util::log('Removed ' . $domain, 'success');
                 util::redirect($this->g->cfg['self'] . '?o=vhosts');
-            } else util::log('ERROR: domain does not exist');
+            } else {
+                util::log('ERROR: domain does not exist');
+            }
         }
         return 'Error deleting item';
     }
 
     protected function list() : string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
-       if ($this->g->in['x'] === 'json') {
+        if (($this->g->in['x'] ?? '') === 'json') {
+            /** @var array<array{dt: int, db: string|null, formatter?: callable}> */
             $columns = [
-                ['dt' => 0,  'db' => 'domain',      'formatter' => function($d, $row) {
+                ['dt' => 0,  'db' => 'domain',      'formatter' => function(?string $d, array $row): string {
                     return '
-                    <a class="editlink" href="?o=vhosts&m=update&i=' . $row['id'] . '" title="Update VHOST">
-                      <b>' . $row['domain'] . '</b></a>';
+                    <a class="editlink" href="?o=vhosts&m=update&i=' . ($row['id'] ?? '') . '" title="Update VHOST">
+                      <b>' . ($row['domain'] ?? '') . '</b></a>';
                 }],
                 ['dt' => 1,  'db' => 'num_aliases'],
-                ['dt' => 2,  'db' => null,          'formatter' => function($d) { return '/'; } ],
+                ['dt' => 2,  'db' => null,          'formatter' => function(?string $d): string { return '/'; }],
                 ['dt' => 3,  'db' => 'aliases'],
                 ['dt' => 4,  'db' => 'num_mailboxes'],
-                ['dt' => 5,  'db' => null,          'formatter' => function($d) { return '/'; } ],
+                ['dt' => 5,  'db' => null,          'formatter' => function(?string $d): string { return '/'; }],
                 ['dt' => 6,  'db' => 'mailboxes'],
-                ['dt' => 7,  'db' => 'size_mpath',  'formatter' => function($d) { return util::numfmt(intval($d)); }],
-                ['dt' => 8,  'db' => null,          'formatter' => function($d) { return '/'; } ],
-                ['dt' => 9,  'db' => 'mailquota',   'formatter' => function($d) { return util::numfmt(intval($d)); }],
-                ['dt' => 10, 'db' => 'size_upath',  'formatter' => function($d) { return util::numfmt(intval($d)); }],
-                ['dt' => 11, 'db' => null,          'formatter' => function($d) { return '/'; } ],
-                ['dt' => 12, 'db' => 'diskquota',   'formatter' => function($d) { return util::numfmt(intval($d)); }],
-                ['dt' => 13, 'db' => 'active',      'formatter' => function($d) {
-                    return '<i class="fas ' . ($d ? 'fa-check text-success' : 'fa-times text-danger') . '"></i>';
+                ['dt' => 7,  'db' => 'size_mpath',  'formatter' => function(?string $d): string { 
+                    return util::numfmt(intval($d ?? '0')); 
+                }],
+                ['dt' => 8,  'db' => null,          'formatter' => function(?string $d): string { return '/'; }],
+                ['dt' => 9,  'db' => 'mailquota',   'formatter' => function(?string $d): string { 
+                    return util::numfmt(intval($d ?? '0')); 
+                }],
+                ['dt' => 10, 'db' => 'size_upath',  'formatter' => function(?string $d): string { 
+                    return util::numfmt(intval($d ?? '0')); 
+                }],
+                ['dt' => 11, 'db' => null,          'formatter' => function(?string $d): string { return '/'; }],
+                ['dt' => 12, 'db' => 'diskquota',   'formatter' => function(?string $d): string { 
+                    return util::numfmt(intval($d ?? '0')); 
+                }],
+                ['dt' => 13, 'db' => 'active',      'formatter' => function(?string $d): string {
+                    return '<i class="fas ' . (intval($d ?? '0') ? 'fa-check text-success' : 'fa-times text-danger') . '"></i>';
                 }],
                 ['dt' => 14, 'db' => 'id'],
                 ['dt' => 15, 'db' => 'updated'],
@@ -166,5 +186,3 @@ elog(__METHOD__);
         return $this->t->list([]);
     }
 }
-
-?>

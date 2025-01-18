@@ -1,12 +1,11 @@
-<?php
-// lib/php/plugins/users.php 20150101 - 20200414
-// Copyright (C) 2015-2020 Mark Constable <markc@renta.net> (AGPL-3.0)
+<?php declare(strict_types=1);
+// lib/php/plugins/users.php 20150101 - 20250117
+// Copyright (C) 2015-2025 Mark Constable <markc@renta.net> (AGPL-3.0)
 
 class Plugins_Accounts extends Plugin
 {
-    protected
-    $tbl = 'accounts',
-    $in = [
+    protected string $tbl = 'accounts';
+    protected array $in = [
         'grp'       => 1,
         'acl'       => 2,
         'vhosts'    => 1,
