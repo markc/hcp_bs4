@@ -1,9 +1,6 @@
-<?php
-
-declare(strict_types=1);
-
-// lib/php/themes/bootstrap5/infosys.php 20170225 - 20240906
-// Copyright (C) 2015-2024 Mark Constable <markc@renta.net> (AGPL-3.0)
+<?php declare(strict_types=1);
+// lib/php/themes/bootstrap5/infosys.php 20170225 - 20250119
+// Copyright (C) 2015-2025 Mark Constable <markc@renta.net> (AGPL-3.0)
 
 class Themes_Bootstrap5_InfoSys extends Themes_Bootstrap5_Theme
 {
@@ -82,8 +79,8 @@ elog(__METHOD__);
         </div>
         <div class="row align-items-md-stretch">
             <div class="col-md-6 mb-4 order-md-0 order-last">
-                <div class="pt-md-2 px-md-5 py-3 px-2 border rounded-3">
-                    <table class="table table-sm table-borderless mb-0 info-table">
+                <div class="p-3 border rounded-3">
+                    <table class="table table-sm table-borderless mb-0">
                         <tbody>
                             <tr><td>Hostname</td><td>{$data['hostname']}</td></tr>
                             <tr><td>Host IP</td><td>{$data['host_ip']}</td></tr>
@@ -97,7 +94,7 @@ elog(__METHOD__);
                 </div>
             </div>
             <div class="col-md-6 mb-4">
-                <div class="py-md-3 px-md-5 py-3 px-2 border rounded-3">
+                <div class="p-3 border rounded-3">
                     {$progressBar('RAM', $data['mem_used'], $data['mem_total'], $data['mem_free'], $data['mem_pcnt'], $data['mem_color'], $data['mem_text'])}
                     {$progressBar('DISK', $data['dsk_used'], $data['dsk_total'], $data['dsk_free'], $data['dsk_pcnt'], $data['dsk_color'], $data['dsk_text'])}
                     {$progressBar2('CPU', $data['cpu_all'], '', '', $data['cpu_pcnt'], $data['cpu_color'], $data['cpu_text'])}

@@ -1,5 +1,5 @@
 <?php declare(strict_types=1);
-// lib/php/themes/bootstrap5/theme.php 20150101 - 20250117
+// lib/php/themes/bootstrap5/theme.php 20150101 - 20250119
 // Copyright (C) 2015-2025 Mark Constable <markc@renta.net> (AGPL-3.0)
 
 class Themes_Bootstrap5_Theme extends Theme {
@@ -36,7 +36,7 @@ class Themes_Bootstrap5_Theme extends Theme {
         </svg>
 
         <!-- Top Navigation -->
-        <nav class="navbar navbar-expand border-bottom px-2 py-2">
+        <nav class="navbar navbar-expand fixed-top px-2 py-2">
             <div class="container-fluid px-0">
                 <div class="d-flex align-items-center">
                     <button class="btn border-0" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarLeft">
@@ -77,27 +77,26 @@ class Themes_Bootstrap5_Theme extends Theme {
             </div>
         </nav>
 
-        <main class="d-flex flex-nowrap">
+        <main class="d-flex flex-nowrap" style="padding-top: 56px;">
             <!-- Left Sidebar -->
-            <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary collapse" style="width: 280px;" id="sidebarLeft">
+            <div class="d-flex flex-column flex-shrink-0 p-3 sidebar collapse position-sticky overflow-y-auto" style="width: 280px; top: 56px; max-height: calc(100vh - 56px);" id="sidebarLeft">
                 {$nav1}
             </div>
 
-            <div class="b-example-divider b-example-vr"></div>
+            <div class="b-example-vr"></div>
 
             <!-- Main Content -->
-            <div class="flex-grow-1 p-3">
+            <div class="flex-grow-1 py-4">
                 {$log}
                 {$main}
                 {$foot}
                 {$end}
             </div>
 
-            <div class="b-example-divider b-example-vr"></div>
+            <div class="b-example-vr"></div>
 
             <!-- Right Sidebar -->
-            <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary collapse" style="width: 280px;" id="sidebarRight">
-                {$nav2}
+            <div class="d-flex flex-column flex-shrink-0 p-3 sidebar collapse position-sticky overflow-y-auto" style="width: 280px; top: 56px; max-height: calc(100vh - 56px);" id="sidebarRight">
                 {$nav3}
             </div>
         </main>
@@ -112,354 +111,12 @@ HTML;
 
         $self = json_encode($this->g->cfg['self']);
 
-//    <link href="lib/css/app.css" rel="stylesheet">
-//    <link href="lib/css/dark-theme.css" rel="stylesheet">
-//    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-
-/* temporary removal to see what the bootstrap5 default colors are
-
-    <style>
-    :root {
-        --bg-main: #f3f4f6;
-        --bg-nav: #ffffff;
-        --bg-sidebar: #e8eaed;
-        --bg-expanded-nav: #f0f1f3;
-        --bg-input: #ffffff;
-        --text-main: #000000;
-        --text-nav: #000000;
-        --text-sidebar: #333333;
-    }
-    
-    [data-theme="dark"] {
-        --bg-main: #2b2b2b;
-        --bg-nav: #333333;
-        --bg-sidebar: #252525;
-        --bg-expanded-nav: #2d2d2d;
-        --bg-input: #333333;
-        --text-main: #ffffff;
-        --text-nav: #ffffff;
-        --text-sidebar: #e0e0e0;
-    }
-
-    input[type="text"],
-    input[type="password"],
-    input[type="email"],
-    input[type="search"],
-    input[type="number"],
-    select,
-    textarea {
-        background-color: var(--bg-input);
-        border: 1px solid rgba(128, 128, 128, 0.2);
-        color: var(--text-main);
-        padding: 0.375rem 0.75rem;
-        border-radius: 0.25rem;
-        transition: border-color 0.15s ease-in-out;
-    }
-
-    input[type="text"]:focus,
-    input[type="password"]:focus,
-    input[type="email"]:focus,
-    input[type="search"]:focus,
-    input[type="number"]:focus,
-    select:focus,
-    textarea:focus {
-        border-color: rgba(128, 128, 128, 0.4);
-        outline: 0;
-        box-shadow: 0 0 0 0.2rem rgba(128, 128, 128, 0.15);
-    }
-
-    body {
-        background-color: var(--bg-main);
-        color: var(--text-main);
-        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
-    }
-
-    .navbar {
-        background-color: var(--bg-nav) !important;
-        border-color: rgba(128, 128, 128, 0.2) !important;
-    }
-
-    .navbar-brand, .navbar .btn-light {
-        color: var(--text-nav) !important;
-    }
-
-    .navbar .btn-light {
-        background-color: transparent !important;
-    }
-
-    .navbar .btn-light:hover {
-        background-color: rgba(128, 128, 128, 0.1) !important;
-    }
-
-    .sidebar {
-        min-height: 100vh;
-        background-color: var(--bg-sidebar);
-        width: 250px;
-        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        will-change: transform, width;
-        overflow: hidden;
-    }
-    
-    @media (min-width: 992px) {
-        .sidebar:not(.show) {
-            width: 0;
-            padding: 0;
-            margin: 0;
-        }
-    }
-    
-    @media (max-width: 991.98px) {
-        .sidebar {
-            position: fixed;
-            top: 56px;
-            left: 0;
-            bottom: 0;
-            z-index: 1000;
-            width: 250px;
-            transform: translateX(-100%);
-        }
-        
-        .sidebar.show {
-            transform: translateX(0);
-        }
-        
-        .sidebar-right {
-            left: auto !important;
-            right: 0;
-            transform: translateX(100%);
-        }
-        
-        .sidebar-right.show {
-            transform: translateX(0);
-        }
-    }
-    
-    .sidebar .nav-link {
-        color: var(--text-sidebar);
-        padding: 0.75rem 1rem;
-        height: 2.75rem;
-        line-height: 1.25rem;
-        display: flex;
-        align-items: center;
-        white-space: nowrap;
-        transition: all 0.3s ease-in-out;
-        opacity: 1;
-        width: 250px;
-    }
-    
-    .sidebar:not(.show) .nav-link {
-        opacity: 0;
-        transform: translateX(-20px);
-    }
-    
-    .sidebar .nav-link:hover {
-        color: var(--text-main);
-        background-color: rgba(128, 128, 128, 0.1);
-    }
-    
-    .sidebar .nav-link.active {
-        color: var(--text-main);
-        background-color: rgba(128, 128, 128, 0.15);
-    }
-    
-    .fwi {
-        width: 1.5em;
-        display: inline-block;
-        text-align: center;
-        margin-right: 0.5rem;
-    }
-
-    .table-responsive {
-        width: 100%;
-    }
-    .table {
-        width: 100% !important;
-    }
-    ul.pagination {
-        padding-top: 1rem;
-    }
-    div.dataTables_wrapper div.dataTables_info {
-        padding-top: 1.6rem;
-    }
-    </style>
-    <script>
-    window.hcpConfig = {
-        selfUrl: {$self}
-    };
-    </script>
-*/
-
         return <<<HTML
     <link href="favicon.ico" rel="icon" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://unpkg.com/bootstrap-table@1.22.1/dist/bootstrap-table.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-    <style>
-        /* Theme-aware navbar styles */
-        .navbar {
-            background-color: var(--bs-body-bg);
-            border-color: var(--bs-border-color);
-        }
-
-        .navbar .btn {
-            color: var(--bs-body-color);
-        }
-
-        .navbar .btn:hover {
-            background-color: var(--bs-tertiary-bg);
-        }
-
-        .navbar-brand {
-            color: var(--bs-body-color);
-        }
-
-        .navbar-brand:hover {
-            color: var(--bs-body-color);
-        }
-
-        /* Base styles */
-        body {
-            min-height: 100vh;
-            min-height: -webkit-fill-available;
-        }
-
-        html {
-            height: -webkit-fill-available;
-        }
-
-        main {
-            height: 100vh;
-            height: -webkit-fill-available;
-            max-height: 100vh;
-            overflow-x: auto;
-            overflow-y: hidden;
-        }
-
-        .b-example-divider {
-            width: 1.5rem;
-            height: 100vh;
-            background-color: rgba(0, 0, 0, .1);
-            border: solid rgba(0, 0, 0, .15);
-            border-width: 1px 0;
-            box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-        }
-
-        .b-example-vr {
-            flex-shrink: 0;
-            width: 1.5rem;
-            height: 100vh;
-        }
-
-        .bi {
-            vertical-align: -.125em;
-            fill: currentColor;
-        }
-
-        .nav-flush .nav-link {
-            border-radius: 0;
-        }
-
-        .btn-toggle {
-            padding: .25rem .5rem;
-            font-weight: 600;
-            color: var(--bs-emphasis-color);
-            background-color: transparent;
-        }
-
-        .btn-toggle:hover,
-        .btn-toggle:focus {
-            color: rgba(var(--bs-emphasis-color-rgb), .85);
-            background-color: var(--bs-tertiary-bg);
-        }
-
-        .btn-toggle::before {
-            width: 1.25em;
-            line-height: 0;
-            content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%280,0,0,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
-            transition: transform .35s ease;
-            transform-origin: .5em 50%;
-        }
-
-        [data-bs-theme="dark"] .btn-toggle::before {
-            content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%28255,255,255,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
-        }
-
-        .btn-toggle[aria-expanded="true"] {
-            color: rgba(var(--bs-emphasis-color-rgb), .85);
-        }
-        .btn-toggle[aria-expanded="true"]::before {
-            transform: rotate(90deg);
-        }
-
-        .btn-toggle-nav a {
-            padding: .1875rem .5rem;
-            margin-top: .125rem;
-            margin-left: 1.25rem;
-        }
-        .btn-toggle-nav a:hover,
-        .btn-toggle-nav a:focus {
-            background-color: var(--bs-tertiary-bg);
-        }
-
-        .scrollarea {
-            overflow-y: auto;
-        }
-
-        .nav-link {
-            color: var(--bs-emphasis-color);
-            text-decoration: none;
-        }
-
-        .nav-link:hover,
-        .nav-link:focus {
-            color: rgba(var(--bs-emphasis-color-rgb), .85);
-        }
-
-        .nav-link.active {
-            color: var(--bs-primary);
-        }
-
-        .sidebar {
-            transition: transform .3s ease-in-out;
-        }
-
-        @media (max-width: 991.98px) {
-            .sidebar {
-                position: fixed;
-                top: 56px;
-                bottom: 0;
-                z-index: 1000;
-                transform: translateX(-100%);
-            }
-
-            .sidebar.show {
-                transform: translateX(0);
-            }
-
-            .sidebar-right {
-                transform: translateX(100%);
-                right: 0;
-                left: auto !important;
-            }
-
-            .sidebar-right.show {
-                transform: translateX(0);
-            }
-        }
-
-        .table-responsive {
-            width: 100%;
-        }
-        .table {
-            width: 100% !important;
-        }
-        ul.pagination {
-            padding-top: 1rem;
-        }
-        div.dataTables_wrapper div.dataTables_info {
-            padding-top: 1.6rem;
-        }
-    </style>
+    <link href="lib/css/hcp.css" rel="stylesheet">
 HTML;
     }
 
@@ -473,214 +130,8 @@ HTML;
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Handle sidebar visibility based on screen size
-        function updateSidebarVisibility() {
-            const isDesktop = window.innerWidth >= 992;
-            const sidebarLeft = document.getElementById('sidebarLeft');
-            const sidebarRight = document.getElementById('sidebarRight');
-            
-            if (isDesktop) {
-                sidebarLeft.classList.add('show');
-                sidebarRight.classList.add('show');
-            } else {
-                sidebarLeft.classList.remove('show');
-                sidebarRight.classList.remove('show');
-            }
-        }
-
-        // Initial setup and window resize handling
-        window.addEventListener('load', updateSidebarVisibility);
-        window.addEventListener('resize', updateSidebarVisibility);
-
-        // Handle left sidebar toggle state
-        const sidebarLeftToggle = document.querySelector('[data-bs-target="#sidebarLeft"]');
-        const sidebarLeft = document.getElementById('sidebarLeft');
-        
-        sidebarLeft.addEventListener('hidden.bs.collapse', () => {
-            sidebarLeftToggle.classList.add('collapsed');
-            sidebarLeft.classList.remove('show');
-        });
-        
-        sidebarLeft.addEventListener('shown.bs.collapse', () => {
-            sidebarLeftToggle.classList.remove('collapsed');
-            sidebarLeft.classList.add('show');
-        });
-
-        // Handle right sidebar toggle state independently
-        const sidebarRightToggle = document.querySelector('[data-bs-target="#sidebarRight"]');
-        const sidebarRight = document.getElementById('sidebarRight');
-        
-        sidebarRight.addEventListener('hidden.bs.collapse', () => {
-            sidebarRightToggle.classList.add('collapsed');
-            sidebarRight.classList.remove('show');
-        });
-        
-        sidebarRight.addEventListener('shown.bs.collapse', () => {
-            sidebarRightToggle.classList.remove('collapsed');
-            sidebarRight.classList.add('show');
-        });
-
-        // Theme toggling functionality
-        const getStoredTheme = () => localStorage.getItem('theme');
-        const setStoredTheme = (theme) => localStorage.setItem('theme', theme);
-
-        const getPreferredTheme = () => {
-            const storedTheme = getStoredTheme();
-            if (storedTheme) {
-                return storedTheme;
-            }
-            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        };
-
-        const setTheme = (theme) => {
-            if (theme === 'auto') {
-                document.documentElement.setAttribute(
-                    'data-bs-theme',
-                    window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-                );
-            } else {
-                document.documentElement.setAttribute('data-bs-theme', theme);
-            }
-        };
-
-        setTheme(getPreferredTheme());
-
-            const showActiveTheme = (theme, focus = false) => {
-                const themeSwitcher = document.querySelector('#bd-theme');
-                if (!themeSwitcher) {
-                    return;
-                }
-
-                const activeThemeIcon = document.querySelector('.theme-icon-active');
-                const btnToActive = document.querySelector('[data-bs-theme-value="' + theme + '"]');
-                
-                if (!btnToActive) {
-                    return;
-                }
-
-                const svgOfActiveBtn = btnToActive.querySelector('i').className;
-
-                document.querySelectorAll('[data-bs-theme-value]').forEach(element => {
-                    element.classList.remove('active');
-                    element.setAttribute('aria-pressed', 'false');
-                });
-
-                btnToActive.classList.add('active');
-                btnToActive.setAttribute('aria-pressed', 'true');
-                if (activeThemeIcon) {
-                    activeThemeIcon.className = svgOfActiveBtn;
-                }
-
-                if (focus) {
-                    themeSwitcher.focus();
-                }
-            };
-
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-            const storedTheme = getStoredTheme();
-            if (storedTheme !== 'light' && storedTheme !== 'dark') {
-                setTheme(getPreferredTheme());
-            }
-        });
-
-        document.querySelectorAll('[data-bs-theme-value]').forEach(toggle => {
-            toggle.addEventListener('click', () => {
-                const theme = toggle.getAttribute('data-bs-theme-value');
-                setStoredTheme(theme);
-                setTheme(theme);
-                showActiveTheme(theme, true);
-            });
-        });
-
-        showActiveTheme(getPreferredTheme());
-
-        // Handle submenu toggling and content loading
-        const submenuToggles = document.querySelectorAll('.sidebar .nav-link');
-        submenuToggles.forEach(toggle => {
-            toggle.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                const submenuId = this.getAttribute('data-bs-target');
-                const submenu = submenuId ? document.querySelector(submenuId) : null;
-    
-                // Toggle submenu if it exists
-                if (submenu) {
-                    const isCurrentlyExpanded = this.getAttribute('aria-expanded') === 'true';
-                    
-                    // Close all submenus
-                    submenuToggles.forEach(otherToggle => {
-                        const otherSubmenuId = otherToggle.getAttribute('data-bs-target');
-                        const otherSubmenu = otherSubmenuId ? document.querySelector(otherSubmenuId) : null;
-                        if (otherSubmenu) {
-                            otherSubmenu.classList.remove('show');
-                            otherToggle.classList.add('collapsed');
-                            otherToggle.setAttribute('aria-expanded', 'false');
-                        }
-                    });
-    
-                    // If the clicked submenu wasn't expanded, open it
-                    if (!isCurrentlyExpanded) {
-                        submenu.classList.add('show');
-                        this.classList.remove('collapsed');
-                        this.setAttribute('aria-expanded', 'true');
-                    }
-                }
-    
-                // Load content
-                loadContent(this.getAttribute('href'));
-            });
-        });
-    
-        function loadContent(url) {
-            fetch(url)
-                .then(response => response.text())
-                .then(html => {
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(html, 'text/html');
-                    const mainContent = doc.querySelector('main').innerHTML;
-                    document.querySelector('main').innerHTML = mainContent;
-                    
-                    // Reinitialize any scripts that need to run on the new content
-                    reinitializeScripts();
-                })
-                .catch(error => console.error('Error loading content:', error));
-        }
-    
-        function reinitializeScripts() {
-            // Destroy existing DataTables
-            if ($.fn.DataTable.isDataTable('.datatable')) {
-                $('.datatable').DataTable().destroy();
-            }
-            
-            // Reinitialize DataTables
-            $('.datatable').DataTable({
-                // Add your DataTables options here
-                "pageLength": 25,
-                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
-            });
-            
-            // Add any other script reinitializations here
-        }
-    
-        // Initial script initialization
-        reinitializeScripts();
-    
-        // Prevent Bootstrap's default collapse behavior
-        const collapseElements = document.querySelectorAll('.sidebar .collapse');
-        collapseElements.forEach(collapse => {
-            collapse.addEventListener('show.bs.collapse', (e) => {
-                e.preventDefault();
-            });
-            collapse.addEventListener('hide.bs.collapse', (e) => {
-                e.preventDefault();
-            });
-        });
-    });
-    </script>
-    HTML;
+    <script src="lib/js/hcp.js"></script>
+HTML;
     }
       
     public function nav1(array $a = []) : string
@@ -691,13 +142,50 @@ HTML;
         $o = '?o=' . $this->g->in['o'];
         $t = '?t=' . util::ses('t');
 
+        // Add Sites menu from nav2
+        $sites = ['Sites', $this->g->nav2, 'bi bi-globe'];
+        
+        // Move Menu to bottom and rename to Links
+        $menu = null;
         $navItems = '';
         foreach ($a as $n) {
+            if ($n[0] === 'Menu') {
+                $n[0] = 'Links';
+                $menu = $n;
+                continue;
+            }
             if (is_array($n[1])) {
                 $navItems .= $this->generateNavDropdown($n, $o, $t);
             } else {
                 $navItems .= $this->generateNavItem($n, $o, $t);
             }
+        }
+
+        // Add Sites menu
+        $navItems .= $this->generateNavDropdown($sites, $o, $t);
+        
+        // Add Links (formerly Menu) at the bottom
+        if ($menu) {
+            $navItems .= $this->generateNavDropdown($menu, $o, $t);
+        }
+
+        // Add user profile at bottom if logged in
+        if (util::is_usr()) {
+            $usr = $this->getUserNavItems();
+            $navItems .= '<div class="mt-auto border-top pt-3">';
+            $navItems .= '<div class="dropdown">';
+            $navItems .= '<a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">';
+            $navItems .= '<img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">';
+            $navItems .= '<strong>' . $_SESSION['usr']['login'] . '</strong>';
+            $navItems .= '</a>';
+            $navItems .= '<ul class="dropdown-menu dropdown-menu-dark text-small shadow">';
+            foreach ($usr as $item) {
+                $icon = isset($item[2]) ? "<i class=\"{$item[2]}\"></i> " : '';
+                $navItems .= "<li><a class=\"dropdown-item\" href=\"{$item[1]}\">{$icon}{$item[0]}</a></li>";
+            }
+            $navItems .= '</ul>';
+            $navItems .= '</div>';
+            $navItems .= '</div>';
         }
 
         return $navItems;
@@ -718,7 +206,7 @@ HTML;
             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#{$id}Submenu" aria-expanded="false">
                 {$icon} {$n[0]}
             </a>
-            <div class="collapse rounded-1 mx-2 mt-1" style="background-color: var(--bg-expanded-nav);" id="{$id}Submenu">
+            <div class="collapse rounded-1 mx-2 mt-1" id="{$id}Submenu">
                 <ul class="nav flex-column py-2">
                     {$items}
                 </ul>
@@ -754,13 +242,7 @@ HTML;
     public function nav3() : string
     {
         elog(__METHOD__);
-
-        if (!util::is_usr()) {
-            return '';
-        }
-
-        $usr = $this->getUserNavItems();
-        return $this->nav_dropdown([$_SESSION['usr']['login'], $usr, 'bi bi-person-fill']);
+        return '';
     }
 
     public function nav_dropdown(array $a = []) : string

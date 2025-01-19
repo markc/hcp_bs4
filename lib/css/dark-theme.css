@@ -114,17 +114,35 @@
   background-color: var(--bs-card-bg);
 }
 
-/* Sidebar */
-.sidebar-wrapper {
+  /* Sidebar */
+.sidebar {
   background-color: var(--bs-dark);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.sidebar-wrapper .menu .sidebar-link {
+.sidebar .nav-link {
   color: #fff;
 }
 
-.sidebar-wrapper .menu .sidebar-link:hover {
-  background-color: #404040;
+.sidebar .nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar .nav-link.active {
+  background-color: var(--bs-primary);
+  color: #fff;
+}
+
+/* Vertical divider */
+.b-example-vr {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: none;
+  width: 1px;
+}
+
+/* Submenu background in dark mode */
+.collapse[id$="Submenu"] {
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 /* Custom styles for the circular progress in the image */
