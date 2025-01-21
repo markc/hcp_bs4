@@ -6,7 +6,7 @@ class Themes_Bootstrap5_Home extends Themes_Bootstrap5_Theme
 {
     public function list(array $in): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         return <<<HTML
         <div class="p-md-5 p-2 mb-4 rounded-3 text-center border">

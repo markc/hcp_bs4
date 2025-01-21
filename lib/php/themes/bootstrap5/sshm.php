@@ -1,29 +1,26 @@
-<?php
-
-declare(strict_types=1);
-
-// lib/php/themes/bootstrap5/sshm.php 20230703 - 20240906
-// Copyright (C) 2015-2024 Mark Constable <markc@renta.net> (AGPL-3.0)
+<?php declare(strict_types=1);
+// lib/php/themes/bootstrap5/sshm.php 20230703 - 20250121
+// Copyright (C) 2015-2025 Mark Constable <markc@renta.net> (AGPL-3.0)
 
 class Themes_Bootstrap5_Sshm extends Themes_Bootstrap5_Theme
 {
     public function create(array $in): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         return $this->modalContent('Create SSH Host', 'create', '', 'Help', 'Create', $this->modalBody($in));
     }
 
     public function update(array $in): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         return $this->modalContent('Update SSH Host', 'update', '', 'Help', 'Update', $this->modalBody($in));
     }
 
     public function delete(array $in): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         $hidden = "<input type='hidden' name='name' value='{$in['name']}'>";
         $body = "<p class='text-center'>Are you sure you want to remove SSH Host for<br><b>{$in['name']}</b></p>";
@@ -32,7 +29,7 @@ elog(__METHOD__);
 
     public function list(array $in): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         $rows = $this->generateTableRows($in['ary'] ?? []);
         return $this->generateListHTML($rows);
@@ -40,18 +37,18 @@ elog(__METHOD__);
 
     public function help(string $name, string $body): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         return $this->modalContent("Help for <b>sshm $name</b>", body: "<pre>$body</pre>");
     }
 
     private function modalBody(array $in): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         $keys = array_pop($in);
         array_unshift($keys, 'none');
-        $skeyOptions = array_map(fn($k) => [$k, $k], $keys);
+        $skeyOptions = array_map(fn(string $k): array => [$k, $k], $keys);
         $skeyBuf = $this->dropdown($skeyOptions, 'skey', $in['skey'], '', 'form-select');
 
         return <<<HTML
@@ -84,21 +81,21 @@ elog(__METHOD__);
 
     public function key_create(array $in): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         return $this->modalContent('Create SSH Key', 'key_create', '', 'Help', 'Create', $this->modalKeyBody($in));
     }
 
     public function key_read(string $name, string $body): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         return $this->modalContent("SSH Key: <b>$name</b>", body: "<textarea rows='12' style='width:100%;'>$body</textarea>");
     }
 
     public function key_delete(array $in): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         $hidden = "<input type='hidden' id='key_name' name='key_name' value='{$in['key_name']}'>";
         $body = "<p class='text-center'>Are you sure you want to remove SSH Key<br><b>{$in['key_name']}</b></p>";
@@ -107,7 +104,7 @@ elog(__METHOD__);
 
     public function key_list(array $in): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         $rows = $this->generateKeyTableRows($in);
         return $this->generateKeyListHTML($rows);
@@ -115,7 +112,7 @@ elog(__METHOD__);
 
     private function modalKeyBody(array $in): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         return <<<HTML
         <div class="row mb-3">
@@ -135,9 +132,16 @@ elog(__METHOD__);
         HTML;
     }
 
-    private function modalContent(string $title, string $action = '', string $lhsCmd = '', string $midCmd = '', string $rhsCmd = '', string $body = '', string $hidden = ''): string
-    {
-elog(__METHOD__);
+    private function modalContent(
+        string $title,
+        string $action = '',
+        string $lhsCmd = '',
+        string $midCmd = '',
+        string $rhsCmd = '',
+        string $body = '',
+        string $hidden = ''
+    ): string {
+        elog(__METHOD__);
 
         $footer = $this->generateModalFooter($lhsCmd, $midCmd, $rhsCmd);
         return <<<HTML
@@ -161,7 +165,7 @@ elog(__METHOD__);
 
     private function generateModalFooter(string $lhsCmd, string $midCmd, string $rhsCmd): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         $buttons = [];
         if ($lhsCmd) $buttons[] = "<button type='submit' class='btn btn-secondary' name='sb' value='$lhsCmd'>$lhsCmd</button>";
@@ -172,14 +176,14 @@ elog(__METHOD__);
 
     private function generateTableRows(array $rows): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
-        return implode('', array_map(fn($row) => $this->generateTableRow(...preg_split('/\s+/', $row)), $rows));
+        return implode('', array_map(fn(string $row): string => $this->generateTableRow(...preg_split('/\s+/', $row)), $rows));
     }
 
     private function generateTableRow(string $name, string $host, string $port, string $user, ?string $skey = null): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         $skeyLink = (!$skey || $skey === 'none') ? '' : "<a class='bslink' href='?o=sshm&m=key_read&skey=$skey'><b>$skey</b></a>";
         return <<<HTML
@@ -200,7 +204,7 @@ elog(__METHOD__);
 
     private function generateListHTML(string $rows): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         return <<<HTML
         <div class="row mb-1">
@@ -238,19 +242,19 @@ elog(__METHOD__);
 
     private function generateKeyTableRows(array $in): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         if ($in['err'] === 254 || $in['err'] === 255) {
             $lvl = $in['err'] === 254 ? 'warning' : 'danger';
             util::log($in['ary'][0], $lvl);
             return '';
         }
-        return implode('', array_map(fn($row) => $this->generateKeyTableRow(...preg_split('/\s+/', $row)), $in['ary']));
+        return implode('', array_map(fn(string $row): string => $this->generateKeyTableRow(...preg_split('/\s+/', $row)), $in['ary']));
     }
 
     private function generateKeyTableRow(string $name, string $size, string $fingerprint, string $comment, string $type): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         return <<<HTML
         <tr>
@@ -270,7 +274,7 @@ elog(__METHOD__);
 
     private function generateKeyListHTML(string $rows): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         return <<<HTML
         <div class="row mb-1">
@@ -308,23 +312,23 @@ elog(__METHOD__);
 
     private function generateModals(): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         $modals = ['create', 'update', 'delete', 'key_read', 'help'];
-        return implode('', array_map(fn($modal) => $this->generateModal($modal), $modals));
+        return implode('', array_map(fn(string $modal): string => $this->generateModal($modal), $modals));
     }
 
     private function generateKeyModals(): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         $modals = ['key_create', 'key_read', 'key_delete', 'help'];
-        return implode('', array_map(fn($modal) => $this->generateModal($modal), $modals));
+        return implode('', array_map(fn(string $modal): string => $this->generateModal($modal), $modals));
     }
 
     private function generateModal(string $name): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         $label = $name === 'key_read' ? 'shkeymodal' : "{$name}modal";
         return <<<HTML
@@ -336,21 +340,21 @@ elog(__METHOD__);
 
     private function generateScript(): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         return $this->generateTableScript('sshm');
     }
 
     private function generateKeyScript(): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         return $this->generateTableScript('sshm_keys');
     }
 
     private function generateTableScript(string $tableId): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         return <<<HTML
         <script>

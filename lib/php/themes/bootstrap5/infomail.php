@@ -1,15 +1,12 @@
-<?php
-
-declare(strict_types=1);
-
-// lib/php/themes/bootstrap5/infomail.php 20170225 - 20240906
-// Copyright (C) 2015-2024 Mark Constable <markc@renta.net> (AGPL-3.0)
+<?php declare(strict_types=1);
+// lib/php/themes/bootstrap5/infomail.php 20170225 - 20250121
+// Copyright (C) 2015-2025 Mark Constable <markc@renta.net> (AGPL-3.0)
 
 class Themes_Bootstrap5_InfoMail extends Themes_Bootstrap5_Theme
 {
     public function list(array $in): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         $csrfToken = $_SESSION['c'] ?? '';
         $mailq = htmlspecialchars($in['mailq'] ?? '');
@@ -22,7 +19,10 @@ elog(__METHOD__);
                 <input type="hidden" name="c" value="{$csrfToken}">
                 <input type="hidden" name="m" value="pflog_renew">
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary"><i class="bi bi-arrow-repeat"></i> Refresh</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-arrow-repeat"></i>
+                        Refresh
+                    </button>
                 </div>
             </form>
         </div>
@@ -37,6 +37,6 @@ elog(__METHOD__);
                 <pre class="overflow-auto">{$pflogs}</pre>
             </div>
         </div>
-        HTML;
+HTML;
     }
 }

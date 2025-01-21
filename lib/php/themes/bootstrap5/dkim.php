@@ -1,15 +1,12 @@
-<?php
-
-declare(strict_types=1);
-
-// lib/php/themes/bootstrap5/dkim.php 20180511 - 20240906
-// Copyright (C) 2015-2024 Mark Constable <markc@renta.net> (AGPL-3.0)
+<?php declare(strict_types=1);
+// lib/php/themes/bootstrap5/dkim.php 20180511 - 20250121
+// Copyright (C) 2015-2025 Mark Constable <markc@renta.net> (AGPL-3.0)
 
 class Themes_Bootstrap5_Dkim extends Themes_Bootstrap5_Theme
 {
     public function create(): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         $keybuf = $this->dropdown([
             ['1024', '1024'],
@@ -44,7 +41,7 @@ elog(__METHOD__);
 
     public function read(array $in): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         return <<<HTML
             <div class="row">
@@ -62,7 +59,7 @@ elog(__METHOD__);
 
     public function delete(array $in): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         return $this->modal([
             'id'        => 'removemodal',
@@ -77,7 +74,7 @@ elog(__METHOD__);
 
     public function list(array $in): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         return <<<HTML
             <div class="row">

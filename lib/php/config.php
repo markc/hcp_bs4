@@ -29,7 +29,7 @@ class Config {
     ];
 
     public array $out = [
-        'doc'   => 'NetServa',
+        'doc'   => 'NetServa HCP',
         'css'   => '',
         'log'   => '',
         'nav1'  => '',

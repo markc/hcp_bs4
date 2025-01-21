@@ -1,15 +1,12 @@
-<?php
-
-declare(strict_types=1);
-
-// lib/php/themes/bootstrap5/accounts.php 20170225 - 20240906
-// Copyright (C) 2015-2024 Mark Constable <markc@renta.net> (AGPL-3.0)
+<?php declare(strict_types=1);
+// lib/php/themes/bootstrap5/accounts.php 20170225 - 20250121
+// Copyright (C) 2015-2025 Mark Constable <markc@renta.net> (AGPL-3.0)
 
 class Themes_Bootstrap5_Accounts extends Themes_Bootstrap5_Theme
 {
     public function create(array $in): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         return $this->modal_content([
             'title'     => 'Create new user',
@@ -22,7 +19,7 @@ elog(__METHOD__);
 
     public function read(array $in): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         return $this->modal_content([
             'title'     => 'Update user',
@@ -35,7 +32,7 @@ elog(__METHOD__);
 
     public function delete(): ?string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         $usr = db::read('login', 'id', $this->g->in['i'], '', 'one');
 
@@ -51,7 +48,7 @@ elog(__METHOD__);
 
     public function list(array $in): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         return <<<HTML
         <div class="row">
@@ -121,7 +118,7 @@ elog(__METHOD__);
 
     private function modal_body(array $in): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         $acl = $_SESSION['usr']['acl'];
         $grp = $_SESSION['usr']['grp'];

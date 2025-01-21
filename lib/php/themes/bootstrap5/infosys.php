@@ -6,7 +6,7 @@ class Themes_Bootstrap5_InfoSys extends Themes_Bootstrap5_Theme
 {
     public function list(array $in): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         $data = $this->prepareData($in);
         return $this->generateInfoSysContent($data);
@@ -14,7 +14,7 @@ elog(__METHOD__);
 
     private function prepareData(array $in): array
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         return [
             'csrfToken' => $_SESSION['c'] ?? '',
@@ -47,7 +47,7 @@ elog(__METHOD__);
 
     private function generateInfoSysContent(array $data): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         $progressBar = fn($label, $used, $total, $free, $pcnt, $color, $text) => <<<HTML
         <div><b>{$label}</b><br>Used: {$used} - Total: {$total} - Free: {$free}</div>

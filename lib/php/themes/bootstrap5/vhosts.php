@@ -1,15 +1,12 @@
-<?php
-
-declare(strict_types=1);
-
-// lib/php/themes/bootstrap5/vhosts.php 20170101 - 20240906
-// Copyright (C) 2015-2024 Mark Constable <markc@renta.net> (AGPL-3.0)
+<?php declare(strict_types=1);
+// lib/php/themes/bootstrap5/vhosts.php 20170101 - 20250121
+// Copyright (C) 2015-2025 Mark Constable <markc@renta.net> (AGPL-3.0)
 
 class Themes_Bootstrap5_Vhosts extends Themes_Bootstrap5_Theme
 {
     public function create(array $in): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         return $this->modalContent(
             'Create New Vhost',
@@ -22,7 +19,31 @@ elog(__METHOD__);
 
     public function update(array $in): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
+
+        if (!isset($in['domain']) || !is_string($in['domain'])) {
+            throw new InvalidArgumentException('Domain must be a string');
+        }
+
+        if (!isset($in['active'])) {
+            throw new InvalidArgumentException('Active status must be set');
+        }
+
+        if (!isset($in['aliases']) || !is_numeric($in['aliases'])) {
+            throw new InvalidArgumentException('Aliases must be numeric');
+        }
+
+        if (!isset($in['mailboxes']) || !is_numeric($in['mailboxes'])) {
+            throw new InvalidArgumentException('Mailboxes must be numeric');
+        }
+
+        if (!isset($in['mailquota']) || !is_numeric($in['mailquota'])) {
+            throw new InvalidArgumentException('Mail quota must be numeric');
+        }
+
+        if (!isset($in['diskquota']) || !is_numeric($in['diskquota'])) {
+            throw new InvalidArgumentException('Disk quota must be numeric');
+        }
 
         $remove = $this->modal([
             'id'        => 'removemodal',
@@ -37,14 +58,14 @@ elog(__METHOD__);
 
     public function list(array $in): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         return $this->generateListHTML();
     }
 
     private function modalContent(string $title, string $action, string $lhsCmd, string $rhsCmd, string $body): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         return <<<HTML
         <div class="modal-content">
@@ -66,7 +87,13 @@ elog(__METHOD__);
 
     private function modalCreateBody(array $in): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
+        
+        // Optional parameters for create form
+        $ip = isset($in['ip']) ? htmlspecialchars($in['ip'], ENT_QUOTES, 'UTF-8') : '';
+        $uuser = isset($in['uuser']) ? htmlspecialchars($in['uuser'], ENT_QUOTES, 'UTF-8') : '';
+        $cms = isset($in['cms']) ? ' checked' : '';
+        $ssl = isset($in['ssl']) ? ' checked' : '';
 
         return <<<HTML
         <div class="mb-3">
@@ -102,7 +129,7 @@ elog(__METHOD__);
 
     private function generateRemoveBody(string $domain): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         $escapedDomain = htmlspecialchars($domain, ENT_QUOTES, 'UTF-8');
         return <<<HTML
@@ -112,7 +139,31 @@ elog(__METHOD__);
 
     private function generateUpdateForm(array $in): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
+
+        if (!isset($in['domain']) || !is_string($in['domain'])) {
+            throw new InvalidArgumentException('Domain must be a string');
+        }
+
+        if (!isset($in['active'])) {
+            throw new InvalidArgumentException('Active status must be set');
+        }
+
+        if (!isset($in['aliases']) || !is_numeric($in['aliases'])) {
+            throw new InvalidArgumentException('Aliases must be numeric');
+        }
+
+        if (!isset($in['mailboxes']) || !is_numeric($in['mailboxes'])) {
+            throw new InvalidArgumentException('Mailboxes must be numeric');
+        }
+
+        if (!isset($in['mailquota']) || !is_numeric($in['mailquota'])) {
+            throw new InvalidArgumentException('Mail quota must be numeric');
+        }
+
+        if (!isset($in['diskquota']) || !is_numeric($in['diskquota'])) {
+            throw new InvalidArgumentException('Disk quota must be numeric');
+        }
 
         $active         = $in['active'] ? ' checked' : '';
         $escapedDomain  = htmlspecialchars($in['domain'], ENT_QUOTES, 'UTF-8');
@@ -182,7 +233,7 @@ elog(__METHOD__);
 
     private function generateListHTML(): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
         $m = $this->g->in['m'] ?? '';
         
         return <<<HTML
@@ -275,7 +326,7 @@ elog(__METHOD__);
 
     private function modalFooter(string $lhsCmd, string $rhsCmd): string
     {
-elog(__METHOD__);
+        elog(__METHOD__);
 
         $lhsButton = $lhsCmd ? "<button type=\"submit\" class=\"btn btn-danger\" name=\"sb\" value=\"$lhsCmd\">$lhsCmd</button>" : '';
         return <<<HTML
