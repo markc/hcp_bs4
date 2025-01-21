@@ -31,7 +31,7 @@ class Theme
 
     public function nav1(): string
     {
-        elog(__METHOD__);
+        elog(__METHOD__.' parent::nav1()');
 
         $o = '?o=' . $this->g->in['o'];
         $currentNav = $this->g->nav1[$_SESSION['gid'] ?? 'non'] ?? [];
@@ -99,7 +99,7 @@ class Theme
         extract($this->g->out, EXTR_SKIP);
         return sprintf(
             '<!DOCTYPE html>
-<html lang="en">
+<html lang="en" darkmode>
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">

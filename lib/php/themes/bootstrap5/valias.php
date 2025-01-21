@@ -1,9 +1,6 @@
-<?php
-
-declare(strict_types=1);
-
-// lib/php/themes/bootstrap5/valias.php 20170101 - 20240906
-// Copyright (C) 2015-2024 Mark Constable <markc@renta.net> (AGPL-3.0)
+<?php declare(strict_types=1);
+// lib/php/themes/bootstrap5/valias.php 20170101 - 20250121
+// Copyright (C) 2015-2025 Mark Constable <markc@renta.net> (AGPL-3.0)
 
 class Themes_Bootstrap5_Valias extends Themes_Bootstrap5_Theme
 {
@@ -182,8 +179,8 @@ elog(__METHOD__);
                     fetch(url)
                         .then(response => response.text())
                         .then(html => {
-                            document.getElementById(`${m}dialog`).innerHTML = html;
-                            new bootstrap.Modal(document.getElementById(`${m}modal`)).show();
+                            document.getElementById(m + dialog).innerHTML = html;
+                            new bootstrap.Modal(document.getElementById(m + modal)).show();
                         });
                 }
             });

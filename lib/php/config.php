@@ -63,29 +63,32 @@ class Config {
             ['Phpmyadmin',  'phpmyadmin/',      'bi bi-globe'],
         ],
         'adm' => [
-            ['Menu',        [
-                ['Webmail',     '../',          'bi bi-envelope'],
-                ['Phpmyadmin',  'phpmyadmin/',  'bi bi-globe'],
-            ], 'bi bi-list'],
             ['Admin',       [
-                ['Accounts',    '?o=accounts',  'bi bi-people'],
-                ['Vhosts',      '?o=vhosts',    'bi bi-globe'],
-                ['SSH Manager', '?o=sshm',      'bi bi-key'],
-                ['Mailboxes',   '?o=vmails',    'bi bi-envelope'],
-                ['Aliases',     '?o=valias',    'bi bi-envelope-at'],
-                ['DKIM',        '?o=dkim',      'bi bi-person-vcard'],
-                ['Domains',     '?o=domains',   'bi bi-server'],
-            ], 'bi bi-gear'],
+                ['Accounts',    '?o=accounts',  'bi bi-people fw'],
+                ['Vhosts',      '?o=vhosts',    'bi bi-globe fw'],
+                ['SSH Manager', '?o=sshm',      'bi bi-key fw'],
+                ['Mailboxes',   '?o=vmails',    'bi bi-envelope fw'],
+                ['Aliases',     '?o=valias',    'bi bi-envelope-at fw'],
+                ['DKIM',        '?o=dkim',      'bi bi-person-vcard fw'],
+                ['Domains',     '?o=domains',   'bi bi-server fw'],
+            ], 'bi bi-gear fw'],
             ['Stats',       [
-                ['Sys Info',    '?o=infosys',   'bi bi-speedometer'],
-                ['Processes',   '?o=processes', 'bi bi-diagram-2'],
-                ['Mail Info',   '?o=infomail',  'bi bi-envelope-at'],
-                ['Mail Graph',  '?o=mailgraph', 'bi bi-envelope'],
-            ], 'bi bi-graph-up'],
+                ['Sys Info',    '?o=infosys',   'bi bi-speedometer fw'],
+                ['Processes',   '?o=processes', 'bi bi-diagram-2 fw'],
+                ['Mail Info',   '?o=infomail',  'bi bi-envelope-at fw'],
+                ['Mail Graph',  '?o=mailgraph', 'bi bi-envelope fw'],
+            ], 'bi bi-graph-up fw'],
+            ['Links',        [
+                ['Webmail',     '../',          'bi bi-envelope fw'],
+                ['Phpmyadmin',  'phpmyadmin/',  'bi bi-globe fw'],
+            ], 'bi bi-list fw'],
         ],
     ];
 
-    public array $nav2 = [];
+    public array $nav2 = ['Remotes',        [
+        ['local',     '?o=remote&r=local',    'bi bi-globe fw'],
+        ['mgo',       '?o=remote&r=mgo',      'bi bi-globe fw'],
+    ], 'bi bi-list fw'];
 
     public array $dns = [
         'a'     => '127.0.0.1',
