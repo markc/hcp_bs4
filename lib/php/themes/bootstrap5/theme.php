@@ -9,7 +9,7 @@ class Themes_Bootstrap5_Theme extends Theme {
         elog(__METHOD__);
 
         extract($this->g->out, EXTR_SKIP);
-        
+
         return <<<HTML
 <!DOCTYPE html>
 <html lang="en">
@@ -117,19 +117,22 @@ HTML;
         } else return '';
     }
 
-   public function css() : string 
+    public function css(): string
     {
         elog(__METHOD__);
 
         $self = json_encode($this->g->cfg['self']);
-
         return <<<HTML
-    <link href="favicon.ico" rel="icon" type="image/x-icon">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link href="https://unpkg.com/bootstrap-table@1.22.1/dist/bootstrap-table.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="lib/css/hcp.css" rel="stylesheet">
-HTML;
+        <link href="favicon.ico" type="image/x-icon" rel="icon">
+        <link rel="prefetch" 
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/fonts/bootstrap-icons.woff2" 
+            as="font" type="font/woff2" crossorigin />
+        <link href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+        <link href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+        <link href="lib/css/hcp.css" rel="stylesheet">
+    HTML;
     }
 
     public function js() : string
@@ -137,11 +140,13 @@ HTML;
         elog(__METHOD__);
 
         return <<<HTML
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-    <script src="lib/js/hcp.js"></script>
-HTML;
+        <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+        <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+        <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="lib/js/hcp.js"></script>
+    HTML;
     }
 
     public function head() : string
@@ -220,7 +225,40 @@ HTML;
         </div>
         HTML;
     }
+    protected function modal(array $ary) : string
+    {
+        elog(__METHOD__);
+elog(var_export($ary, true));
 
+        extract($ary);
+        $hidden = isset($hidden) && $hidden ? $hidden : '';
+        $footer = isset($footer) && $footer ? '
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">' . $footer . '</button>
+        </div>' : '';
+        
+        return '
+        <div class="modal fade" id="' . $id . '" tabindex="-1" role="dialog" aria-labelledby="' . $id . '" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">' . $title . '</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="post" action="' . $this->g->cfg['self'] . '">
+                        <input type="hidden" name="c" value="' . $_SESSION['c'] . '">
+                        <input type="hidden" name="o" value="' . $this->g->in['o'] . '">
+                        <input type="hidden" name="m" value="' . $action . '">
+                        <input type="hidden" name="i" value="' . $this->g->in['i'] . '">' . $hidden . '
+                        <div class="modal-body">' . $body . '</div>' . 
+                        $footer . '
+                    </form>
+                </div>
+            </div>
+        </div>';
+    }
+/*
     protected function modal(array $ary) : string
     {
 elog(__METHOD__);
@@ -255,5 +293,6 @@ elog(__METHOD__);
           </div>
         </div>';
     }
+*/
 
 }

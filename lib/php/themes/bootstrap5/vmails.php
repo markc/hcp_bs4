@@ -138,6 +138,89 @@ class Themes_Bootstrap5_Vmails extends Themes_Bootstrap5_Theme
             $update
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
+                    // Initialize DataTable with fixed configuration
+                    const table = new DataTable('#vmails', {
+                        processing: true,
+                        serverSide: true,
+                        ajax: '?x=json&o=vmails&m=list',
+                        order: [[0, 'asc']], // Changed from [4, 'desc'] since column 4 is not visible
+                        scrollX: true,
+                        autoWidth: false,
+                        columns: [
+                            { data: 'email', width: '40%' },     // Email column
+                            { data: 'usage', width: '25%' },     // Usage column
+                            { data: 'messages', width: '25%' },  // Messages column
+                            { 
+                                data: null,                      // Action column
+                                width: '10%',
+                                render: function(data, type, row) {
+                                    return '<div class="btn-group" role="group">' +
+                                        '<button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#updatemodal" data-user="' + row.email + '">' +
+                                        '<i class="bi bi-key"></i>' +
+                                        '</button>' +
+                                        '<button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#removemodal" data-removeuser="' + row.email + '">' +
+                                        '<i class="bi bi-trash"></i>' +
+                                        '</button>' +
+                                        '</div>';
+                                }
+                            }
+                        ],
+                        columnDefs: [
+                            { targets: 1, className: 'text-end' },  // Right-align usage
+                            { targets: 2, className: 'text-end' },  // Right-align messages
+                            { targets: 3, className: 'text-end', sortable: false }  // Right-align actions, no sorting
+                        ]
+                    });
+
+                    // Remove modal event listener
+                    const removeModal = document.getElementById('removemodal');
+                    removeModal.addEventListener('show.bs.modal', function(event) {
+                        const button = event.relatedTarget;
+                        const user = button.getAttribute('data-removeuser');
+                        this.querySelector('#removeuser').value = user;
+                        this.querySelector('#targetuser').textContent = user;
+                    });
+
+                    // Update modal event listener
+                    const updateModal = document.getElementById('updatemodal');
+                    updateModal.addEventListener('show.bs.modal', function(event) {
+                        const button = event.relatedTarget;
+                        const user = button.getAttribute('data-user');
+                        this.querySelector('#updateuser').value = user;
+                        
+                        const passwordInput = this.querySelector('#password');
+                        
+                        // Show password button click handler
+                        const showPasswordButton = this.querySelector('#shpw');
+                        showPasswordButton.onclick = function() {
+                            fetch('?x=text&o=vmails&m=update&shpw=1&user=' + encodeURIComponent(user), {
+                                method: 'POST'
+                            })
+                            .then(response => response.text())
+                            .then(data => passwordInput.value = data)
+                            .catch(error => console.error('Error:', error));
+                        };
+
+                        // New password button click handler
+                        const newPasswordButton = this.querySelector('#newpw');
+                        newPasswordButton.onclick = function() {
+                            fetch('?x=text&o=vmails&m=update&newpw=1', {
+                                method: 'POST'
+                            })
+                            .then(response => response.text())
+                            .then(data => passwordInput.value = data)
+                            .catch(error => console.error('Error:', error));
+                        };
+                    });
+                });
+            </script>
+            HTML;
+    }
+}
+
+
+/*
+                document.addEventListener('DOMContentLoaded', function() {
                     // Initialize DataTable
                     const table = new DataTable('#vmails', {
                         processing: true,
@@ -189,7 +272,4 @@ class Themes_Bootstrap5_Vmails extends Themes_Bootstrap5_Theme
                         });
                     });
                 });
-            </script>
-            HTML;
-    }
-}
+*/

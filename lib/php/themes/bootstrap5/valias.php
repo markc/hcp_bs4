@@ -138,7 +138,7 @@ class Themes_Bootstrap5_Valias extends Themes_Bootstrap5_Theme
             <h1>
                 <i class="bi bi-envelope"></i> Aliases
                 <a href="?o=valias&m=create" class="bslink" title="Add New Alias">
-                    <small><i class="bi bi-plus-circle"></i></small>
+                    <i class="bi bi-plus-circle-fill fs-3"></i>
                 </a>
             </h1>
         </div>

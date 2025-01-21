@@ -241,7 +241,7 @@ class Themes_Bootstrap5_Vhosts extends Themes_Bootstrap5_Theme
             <h1>
                 <i class="bi bi-globe"></i> Vhosts
                 <a href="?o=vhosts&m=create" class="bslink" title="Add New Vhost">
-                    <small><i class="bi bi-plus-circle"></i></small>
+                    <i class="bi bi-plus-circle-fill fs-3"></i>
                 </a>
             </h1>
         </div>
